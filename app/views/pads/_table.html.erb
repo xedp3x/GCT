@@ -1,0 +1,9 @@
+<tr onclick="window.location = '<%= url_for :action => 'show', :pad => pad.name %>'">
+		<td><%= pad.name %></td>
+		<td> <%= pad.user_count %> </td>
+		<td> <% au = []
+      pad.authors.each{|a| au.push(a.name)} %>
+		<%= au.join(', ') %> </td>
+		<td><%= link_to 'Show', :action => 'show', :pad => pad.name %></td>
+		<td><%= link_to 'Destroy', {:action => 'show', :pad => pad.name}, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+	</tr>

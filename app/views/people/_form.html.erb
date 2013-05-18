@@ -1,0 +1,33 @@
+<button onclick="show_all_attributes(); return false;">
+	Alles Anzeigen
+</button>
+
+<%= form_for(@person, :html => {:multipart => true}) do |f| %>
+<% if @person.errors.any? %>
+<div id="error_explanation">
+	<h2><%= pluralize(@person.errors.count, "error") %> prohibited this person from being saved:</h2>
+
+	<ul>
+		<% @person.errors.full_messages.each do |msg| %>
+		<li>
+			<%= msg %>
+		</li>
+		<% end %>
+	</ul>
+</div>
+<% end %>
+
+<dl class="dl-horizontal lage-dt">
+	<% done_list = {}%>
+	<% @person.must.each {|m| %>
+	<%= render('attribute', :m => m, :all => true) if done_list[m.id].nil?%>
+	<% done_list[m.id] = true }%>
+
+	<% @person.may.each {|m| %>
+	<%= render('attribute', :m => m) if done_list[m.id].nil?%>
+	<% done_list[m.id] = true }%>
+</dl>
+<div class="actions">
+	<%= f.submit %>
+</div>
+<% end %>

@@ -19,7 +19,12 @@
 						<ul class="nav">
 							<%@MENU.each { |k,e| if !e[:hidden] then %>
 							<li<%= ' class="active"'.html_safe if e[:active] %>>
-								<%= link_to e[:text], :controller => e[:controller], :action => e[:action] %></li>
+								<% if e[:url] then %>
+								<%= link_to e[:text], e[:url] %>
+								<% else %>
+								<%= link_to e[:text], :controller => e[:controller], :action => e[:action] %>
+								<% end %>
+								</li>
 								<% end } %>
 						</ul>
 					</div>
@@ -28,7 +33,7 @@
 						<ul class="nav">
 							<% if @USER_LOGIN then%>
 							<li class="dropdown">
-								<a class="dropdown-toggle" data-toggle="dropdown" href="<%="http://www.#{@config["site"]["host"]}/"%>"> <%= @USER.gn %> <b class="caret"></b> </a>
+								<a class="dropdown-toggle" data-toggle="dropdown" href="<%= "http://www.#{@config["site"]["host"]}/"%>"> <%= @USER.gn %> <b class="caret"></b> </a>
 								<ul class="dropdown-menu">
 									<li>
 										<%= link_to "Meine Gruppen", "http://www.#{@config["site"]["host"]}/#groups" %>

@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
         :action => "index"
        }
     }
-    
+
     @config = YAML.load(File.open('config/gct.yml'))
 
     if request.subdomain.empty? then
@@ -42,7 +42,7 @@ class ApplicationController < ActionController::Base
           @GROUP = Group.find request.subdomain
         rescue ActiveLdap::EntryNotFound
           render :state => 404, :text => "Die Gruppe '#{request.subdomain}' ist unbekannt"
-          return true
+        return true
         end
         @GROUP_NAME = @GROUP.name
       end
@@ -51,11 +51,13 @@ class ApplicationController < ActionController::Base
         begin
           @USER_LOGIN = true
           @USER = Person.find session[:user_id]
-          if @USER.member? 'ldapadmin' then
-            @MENU[:people][:hidden] = false
-          end
-          if @USER.member? 'ldapmanager' then
-            @MENU[:people][:hidden] = false
+          if !@GROUP.nil? then
+            if @GROUP.admin? @USER.id then
+            @MENU[:group_admin] = {
+              :text => "Admin",
+              :url => {:host => "www.#{@config["site"]["host"]}", controller: :groups, action: :edit, id: @GROUP} 
+            }
+            end
           end
         rescue
           session[:user_id]= nil

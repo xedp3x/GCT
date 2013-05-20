@@ -3,6 +3,7 @@
 <table class="table table-hover">
 	<tr>
 		<th>CommonName</th>
+		<th>Name</th>
 		<th>Description</th>
 		<th></th>
 		<th></th>
@@ -13,6 +14,7 @@
 	<% @groups.each do |group| %>
 	<tr onclick="window.location = '<%="http://#{group.cn}.#{@config["site"]["host"]}"%>'">
 		<td><%= group.cn %></td>
+		<td><%= group.name %></td>
 		<td><%= group.description %></td>
 		<td><%= link_to 'Show', "http://#{group.cn}.#{@config["site"]["host"]}" %></td>
 		<td><%= link_to 'Edit', edit_group_path(group) %></td>

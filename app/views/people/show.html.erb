@@ -17,7 +17,7 @@ Gruppen:
 <ul>
 	<% @person.groups.each {|g| %>
 	<li>
-		<%= if g.description.nil? then g.cn else g.description end %>
+		<%= g.name %>
 	</li>
 	<% } %>
 </ul>

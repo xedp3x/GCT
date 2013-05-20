@@ -44,7 +44,7 @@ class ApplicationController < ActionController::Base
           render :state => 404, :text => "Die Gruppe '#{request.subdomain}' ist unbekannt"
           return true
         end
-        @GROUP_NAME = @GROUP.description
+        @GROUP_NAME = @GROUP.name
       end
 
       if !session[:user_id].nil? then

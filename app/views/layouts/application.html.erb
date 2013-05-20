@@ -28,10 +28,10 @@
 						<ul class="nav">
 							<% if @USER_LOGIN then%>
 							<li class="dropdown">
-								<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <%= @USER.gn %> <b class="caret"></b> </a>
+								<a class="dropdown-toggle" data-toggle="dropdown" href="<%="http://www.#{@config["site"]["host"]}/"%>"> <%= @USER.gn %> <b class="caret"></b> </a>
 								<ul class="dropdown-menu">
 									<li>
-										<%= link_to "Meine Gruppen", :host => "www.#{@config["site"]["host"]}", :action => 'index', :controller => 'groups' %>
+										<%= link_to "Meine Gruppen", "http://www.#{@config["site"]["host"]}/#groups" %>
 									</li>
 									<li>
 										<%= link_to "Meine Profil", "http://www.#{@config["site"]["host"]}" %>

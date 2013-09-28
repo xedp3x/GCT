@@ -1,7 +1,0 @@
-site:
-  host: 'gct.lo'
-pad:
-  version: '1.2.1' 
-  key: '123456789'
-  host: 'gct.lo'
-  port: '9001'

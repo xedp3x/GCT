@@ -1,0 +1,35 @@
+<dt class="<%= "blank-attribute" if @group.attributes[m.name].nil? and !defined? all%>">
+	<acronym title="<%= m.description %>"><%= if m.aliases.count > 0 then m.aliases[0] else m.name end %></acronym>
+	<% if m.aliases.count > 0 then %><acronym title="<%= m.name %>">*</acronym> <% end %>
+</dt>
+<dd  class="<%= "blank-attribute" if @group.attributes[m.name].nil? and !defined? all %>">
+	<% case m.syntax.id %>
+	<% when "1.3.6.1.4.1.1466.115.121.1.12",
+	"1.3.6.1.4.1.1466.115.121.1.15",
+	"1.3.6.1.4.1.1466.115.121.1.22",
+	"1.3.6.1.4.1.1466.115.121.1.26",
+	"1.3.6.1.4.1.1466.115.121.1.36",
+	"1.3.6.1.4.1.1466.115.121.1.40",
+	"1.3.6.1.4.1.1466.115.121.1.41",
+	"1.3.6.1.4.1.1466.115.121.1.44",
+	"1.3.6.1.4.1.1466.115.121.1.50",
+	"1.3.6.1.4.1.1466.115.121.1.51",
+	"1.3.6.1.4.1.1466.115.121.1.52"%>
+	<% if @group.attributes[m.name].kind_of?(Array) then %>
+		<% if @group.attributes[m.name].count > 1 then %>
+			<% @group.attributes[m.name].each {|e| %>
+				<input id="group_<%= m.name %>" name="group[<%= m.name %>][]" size="<%= m.syntax.length %>" type="text" value="<%= e %>" />
+			<% }%>
+		<% else %>
+			<input id="group_<%= m.name %>" name="group[<%= m.name %>]" size="<%= m.syntax.length %>" type="text" value="<%= @group.attributes[m.name].first %>" />
+		<% end %>
+	<% else %>
+		<input id="group_<%= m.name %>" name="group[<%= m.name %>]" size="<%= m.syntax.length %>" type="text" value="<%= @group.attributes[m.name] %>" />
+	<% end %>
+	<% when "1.3.6.1.4.1.1466.115.121.1.27" %>
+	<input id="group_<%= m.name %>" name="group[<%= m.name %>]" type="number" value="<%= if @group.attributes[m.name].kind_of?(Array) then @group.attributes[m.name][0] else @group.attributes[m.name] end %>" />
+	<% else %>
+	OID '<%= m.syntax.id %>' (<%= m.syntax.description %>) ist nicht implementiert!
+	<pre><%= @group.attributes[m.name] %></pre>																															
+	<% end %>
+</dd>

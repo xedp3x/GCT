@@ -1,0 +1,34 @@
+<button onclick="show_all_attributes(); return false;">
+	Alles Anzeigen
+</button>
+
+<%= form_for(@group) do |f| %>
+<% if @group.errors.any? %>
+<div id="error_explanation">
+	<h2><%= pluralize(@group.errors.count, "error") %> prohibited this group from being saved:</h2>
+
+	<ul>
+		<% @group.errors.full_messages.each do |msg| %>
+		<li>
+			<%= msg %>
+		</li>
+		<% end %>
+	</ul>
+</div>
+<% end %>
+
+<dl class="dl-horizontal lage-dt">
+	<% done_list = {}%>
+	<% @group.must.each {|m| %>
+	<%= render('attribute', :m => m, :all => true) if done_list[m.id].nil?%>
+	<% done_list[m.id] = true }%>
+
+	<% @group.may.each {|m| %>
+	<%= render('attribute', :m => m) if done_list[m.id].nil?%>
+	<% done_list[m.id] = true }%>
+</dl>
+
+<div class="actions">
+	<%= f.submit %>
+</div>
+<% end %>

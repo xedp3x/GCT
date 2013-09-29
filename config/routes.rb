@@ -1,4 +1,53 @@
+class Subdomain
+  def self.matches?(request)
+    case request.subdomain
+    when 'www', '', nil
+      false
+    else
+      true
+    end
+  end
+end
+
+class Rootdomain
+  def self.matches?(request)
+    case request.subdomain
+    when 'www', '', nil
+      true
+    else
+      false
+    end
+  end
+end
+
+
+
 GCT::Application.routes.draw do
+  
+  constraints(Subdomain) do
+    root :to => 'groups#show'
+
+    match '/p' => 'pads#new', :via => :post
+    match '/p/:pad' => 'pads#delete', :via => :delete
+    match '/p' => 'pads#index', :via => :get
+    match '/p/:pad' => 'pads#show', :via => :get
+  end
+
+  constraints(Rootdomain) do
+    root :to => 'user#index', :as => 'main'
+
+    resources :people
+    resources :groups
+
+    match '/p/:pad' => 'pads#show', :via => :get
+    match '/p' => 'home#pads', :via => :get
+
+    match '/logout' => 'user#logout', :via => :all
+    match '/login(/:uid)' => 'user#auth', :via => :all
+    match '/token/:uid/:token' => 'user#token', :via => :all
+  end
+  
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

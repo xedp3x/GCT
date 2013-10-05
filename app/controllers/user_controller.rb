@@ -23,13 +23,23 @@ class UserController < ApplicationController
   def token
     begin
       u= Person.find params[:uid]
-      if !u.auth params[:token] then
-        @error = "Der Link ist alt oder defekt!"
+      if params[:time] then
+        if params[:time].to_i + 6*60*60 < Time.now.to_i then
+          @error = "Der Link ist älter als 6 Stunden und daher ungültig"
+        else
+          if Base64.encode64(Digest::MD5.digest("#{params[:time]}#{u.userPassword}")).gsub('/','|') != params[:token] then
+            @error = "Der Link ist alt oder defekt!"
+          end
+        end
+      else
+        if !u.auth params[:token] then
+          @error = "Der Link ist alt oder defekt!"
+        end
       end
     rescue ActiveLdap::EntryNotFound
       @error = "Der Link ist alt oder defekt!"
     end
-    if params[:password] then
+    if params[:password] and !@error.nil? then
       if params[:password] != params[:password2] then
         @error = "Deine Passwordwiederholung ist falsch"
       else
@@ -55,6 +65,23 @@ class UserController < ApplicationController
         @error = "Username oder Passwort ist falsch"
       end
     end
+  end
+
+  def reset
+    if !@config["user"]["recovery"] then
+      render state: :forbidden, text: "Password recovery is diabled!"
+      return
+    end
+    @MENU[:home][:active] = false
+    begin
+      u= Person.find params[:name]
+      UserMailer.reset_email(u).deliver
+      render text: "Sie erhlaten gleich eine Mail."
+    rescue ActiveLdap::EntryNotFound
+      @error = "Username ist falsch"
+      render 'auth'
+    end
+
   end
 
   def logout

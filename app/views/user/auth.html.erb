@@ -1,22 +1,46 @@
 <div class="container">
-		<div class="content">
-			<div class="row">
-				<div class="login-form">
-					<h2>Login</h2>
-					<span style="color: red"><%= @error%></span>
-					<form method="post">
-						<input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
-						<fieldset>
-							<div class="clearfix">
-								<input name=name type="text" placeholder="Username" value="<%= params[:uid] %>">
-							</div>
-							<div class="clearfix">
-								<input name=password type="password" placeholder="Passwort">
-							</div>
-							<button class="btn primary" type="submit">Sign in</button>
-						</fieldset>
-					</form>
-				</div>
+	<div class="content">
+		<div class="row">
+			<div class="login-form" id="login_form">
+				<h2>Login</h2>
+				<span style="color: red"><%= @error%></span>
+				<form method="post">
+					<input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+					<fieldset>
+						<div class="clearfix">
+							<input name=name type="text" placeholder="Username" value="<%= params[:uid] %>">
+						</div>
+						<div class="clearfix">
+							<input name=password type="password" placeholder="Passwort">
+						</div>
+						<button class="btn primary" type="submit">
+							Sign in
+						</button>
+						<% if @config["user"]["recovery"] then %>
+						<a href="#" onclick="$('#login_form').hide();$('#reset_form').show(); return false;"> Passwort vegessen </a>
+						<% end %>
+					</fieldset>
+				</form>
 			</div>
+			<% if @config["user"]["recovery"] then %>
+			<div class="login-form" id="reset_form">
+				<h2>Passwort recovery</h2>
+				<form method="post" action="<%= url_for action: :reset %>">
+					<input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+					<fieldset>
+						<div class="clearfix">
+							<input name=name type="text" placeholder="Username" value="<%= params[:uid] %>">
+						</div>
+						<button class="btn primary" type="submit">
+							Password resetten
+						</button>
+					</fieldset>
+				</form>
+			</div>
+			<% end %>
 		</div>
-	</div> <!-- /container -->
+	</div>
+</div>
+<!-- /container -->
+
+<script language="JavaScript">$('#reset_form').hide();</script>

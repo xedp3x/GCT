@@ -1,5 +1,8 @@
 site:
   host: 'gct.lo'
+  mail: 'root@gct.lo'
+user:
+  recovery: true
 pad:
   version: '1.2.1' 
   key: '123456789'

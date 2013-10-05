@@ -63,7 +63,7 @@ class ApplicationController < ActionController::Base
           session[:user_id]= nil
         end
       end
-      if ((controller_name != 'user') or ((action_name != 'auth') and (action_name != 'token'))) and session[:user_id].nil? then
+      if (controller_name != 'user' or (controller_name == 'user' and action_name == 'index'))and session[:user_id].nil? then
         redirect_to :controller => "user", :action => "auth", :host => "www.#{request.host.split('.').last(2).join('.')}"
       end
     end
